@@ -1,0 +1,71 @@
+// const heading = React.createElement(
+//   "h1",
+//   { id: "heading" },
+//   "Hello World from react"
+// );//JSX (transpiled before it reaches the js) - Parcel - Bable
+
+//JSX => Babel transpiles it to React.createElement => ReactElement-JS Object=> HTMLElement(render)
+
+//react Element
+const jsxHeading = (
+    <h1 className="head" tabIndex="5">
+      Namaste React using JSX
+    </h1>
+  );
+  
+  //React Component
+  //Class based component
+  //Functional Component
+  
+  //React Functional Component
+  //also done using normal function
+  const Title = function() {
+         return( <h1 className="Heading" tabIndec="5">Functional Composition : function inside function</h1>
+  )};
+  
+  //we can write element or any javascriptcode inside component inside curly braces
+  //but we cannot use any component and element inside other component or element without initialization
+  const elem2 = <div>React element</div>
+  const elem = <span><Title /> {elem2}React element and component </span>
+  const HeadingElement = () => (
+    <div id="container">
+      {elem}
+      {100+200}
+      {/* there are three ways to call functions inside the functional component because at the end of the day it is simple javascript{Title()}
+      <Title></Title> */}
+      <Title />
+      <h1>React functional Element</h1>
+    </div>
+  );
+  
+  // const HeadingElement1 = () => (
+  //      return <h1 className="head">React functional Element</h1>
+  // );
+  //both headingelement and headingElement1 are same one with return other without return
+  // const heading = React.createElement("h1", {id: "heading"}, "Namaste React");
+  
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  
+  root.render(<HeadingElement />);
+  // root.render(jsxHeading);
+  // const parent = React.createElement("div", { id: "parent" }, [
+  //   React.createElement("div", { id: "child1" }, [
+  //     React.createElement("h1", {}, "This is Namaste react"),
+  //     React.createElement("h2", {}, "I am an h2 tag"),
+  //   ]),
+  //   React.createElement("div", { id: "child2" }, [
+  //     React.createElement("h1", {}, "I am an h1 tag"),
+  //     React.createElement("h2", {}, "I am an h2 tag"),
+  //   ]),
+  // ]);
+  
+  // const root = ReactDOM.createRoot(document.getElementById("root"));
+  
+  // root.render(parent);
+  // root.render(heading);
+  
+
+  //inline css
+// const styleCard = {
+//   backgroundColor: "grey",
+// };
