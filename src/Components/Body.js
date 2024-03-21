@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "./Restaurant-cards";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   //local state variable = super powerful variable
@@ -9,7 +11,6 @@ const Body = () => {
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
 
   //useEffect is called on every called if it had no dependency array
-
 
   console.log("Body rendered");
 
@@ -28,7 +29,9 @@ const Body = () => {
     setListOfRestaurants(
       json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
-    setFilteredRestaurant(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    setFilteredRestaurant(
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
     console.log(json);
   };
 
@@ -37,6 +40,10 @@ const Body = () => {
   //   return <Shimmer />;
   // }
 
+  const OnlineStatus = useOnlineStatus();
+  if (OnlineStatus == false) {
+    return <h1>Sorry !! you lost your internet connection</h1>;
+  }
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
   ) : (
@@ -79,7 +86,12 @@ const Body = () => {
       </div>
       <div className="res-container">
         {filteredRestaurant.map((restaurant) => (
-          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+          <Link
+            key={restaurant.info.id}
+            to={"/restaurants/" + restaurant.info.id}
+          >
+            <RestaurantCard resData={restaurant} />
+          </Link>
         ))}
       </div>
     </div>
