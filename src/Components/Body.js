@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
-import RestaurantCard from "./Restaurant-cards";
+import RestaurantCard, { withPromotedLabel } from "./Restaurant-cards";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import { RESTAURANTLIST_URL } from "../utils/Common";
 
 const Body = () => {
   //local state variable = super powerful variable
+  const OnlineStatus = useOnlineStatus();
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
 
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
   //useEffect is called on every called if it had no dependency array
 
   console.log("Body rendered");
@@ -20,9 +23,7 @@ const Body = () => {
   }, []);
 
   const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9715987&lng=77.5945627&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
+    const data = await fetch(RESTAURANTLIST_URL);
 
     const json = await data.json();
     // optional chaining
@@ -40,7 +41,6 @@ const Body = () => {
   //   return <Shimmer />;
   // }
 
-  const OnlineStatus = useOnlineStatus();
   if (OnlineStatus == false) {
     return <h1>Sorry !! you lost your internet connection</h1>;
   }
@@ -48,11 +48,11 @@ const Body = () => {
     <Shimmer />
   ) : (
     <div className="body">
-      <div className="filter">
-        <div className="search">
+      <div className="filter flex">
+        <div className="search m-2 p-2">
           <input
             type="text"
-            className="search-box"
+            className="border-2 border-black m-2 rounded-lg"
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
@@ -61,6 +61,7 @@ const Body = () => {
           <button
             //filter the restaurant cards and update the ui
             //searchtext
+            className="px-4 py-2 bg-green-100 m-4"
             onClick={() => {
               const filteredRestaurants = listOfRestaurants.filter((res) =>
                 res?.info?.name.toLowerCase().includes(searchText.toLowerCase())
@@ -72,25 +73,31 @@ const Body = () => {
             Search
           </button>
         </div>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            const filteredList = listOfRestaurants.filter(
-              (res) => res.info.avgRating > 4
-            );
-            setFilteredRestaurant(filteredList);
-          }}
-        >
-          Top-Rated Restaurant
-        </button>
+        <div className="search m-2 p-2 flex items-center">
+          <button
+            className="filter-btn px-4 py-2 bg-gray-100 rounded-lg"
+            onClick={() => {
+              const filteredList = listOfRestaurants.filter(
+                (res) => res.info.avgRating > 4
+              );
+              setFilteredRestaurant(filteredList);
+            }}
+          >
+            Top-Rated Restaurant
+          </button>
+        </div>
       </div>
-      <div className="res-container">
+      <div className="flex flex-wrap ">
         {filteredRestaurant.map((restaurant) => (
           <Link
             key={restaurant.info.id}
             to={"/restaurants/" + restaurant.info.id}
           >
-            <RestaurantCard resData={restaurant} />
+            {restaurant.info.promoted == true ? (
+              <RestaurantCardPromoted resData={restaurant} />
+            ) : (
+              <RestaurantCard resData={restaurant} />
+            )}
           </Link>
         ))}
       </div>

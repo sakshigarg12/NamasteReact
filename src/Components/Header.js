@@ -10,18 +10,18 @@ const HeaderLayout = () => {
   // const onlineStatus = useOnlineStatus();
   
     return (
-      <div className="header">
+      <div className="flex justify-between bg-pink-100 shadow-lg">
         <div className="logo-container">
-          <img className="logo" src={LOGO_URL}></img>
+          <img className="w-32" src={LOGO_URL}></img>
         </div>
         <div className="nav-items"> 
-          <ul>
+          <ul className="flex p-6 m-2 items-center">
             {/* <li>online status : {onlineStatus}</li> */}
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About us</Link></li>
-            <li><Link to="/contact">Contact us</Link></li>
-            <li><Link to="/grocery">Grocery</Link></li>
-            <li>Cart</li>
+            <li className="px-6"><Link to="/">Home</Link></li>
+            <li className="px-6"><Link to="/about">About us</Link></li>
+            <li className="px-6"><Link to="/contact">Contact us</Link></li>
+            <li className="px-6"><Link to="/grocery">Grocery</Link></li>
+            <li className="px-6">Cart</li>
             <button className="login" onClick={() => {
               btnNameReact === "Login" ? setBtnNameReact("Logout") : setBtnNameReact("Login");
               
